@@ -18,7 +18,7 @@
 
 ## 相关链接
 
-Demo: [立即查看](https://pblog.loccai.com/)
+Demo: [立即查看](https://pblog.loccai.top/)
 
 优化图片占用: [查看教程](https://github.com/LoCCai/TimePlus/wiki/Time%E7%9B%B8%E5%86%8C%E5%9B%BE%E5%86%8C%E4%BC%98%E5%8C%96%E6%96%B9%E6%A1%88-%E7%BC%A9%E7%95%A5%E5%9B%BE%E5%8E%8B%E7%BC%A9%E5%92%8Cwebp%E8%87%AA%E9%80%82%E5%BA%94)
 
