@@ -4,7 +4,9 @@
 <img src="https://img.shields.io/badge/Language-javascript-blue?logo=javascript&logoColor=f7cb4f">
 <img src="https://img.shields.io/badge/Language-php-blue?logo=php&logoColor=f7cb4f">
 <img src="https://img.shields.io/badge/Language-html-blue?logo=html5&logoColor=f7cb4f">
-<img src="https://img.shields.io/badge/Language-css-blue?logo=css3&logoColor=f7cb4f">
+<img src="https://img.shields.io/badge/Language-css-blue?logo=css3&logoColor=f7cb4f"><br />
+<img src="https://img.shields.io/github/languages/code-size/weizwz/fun-animation?label=fun-animation%20code%20size"><br />
+<img src="https://img.shields.io/github/stars/LoCCai/TimePlus?style=social"><br />
 </p>
 
 # 由 [LoCCai](https://loccai.top) 修改 自 [zhheo](https://plog.zhheo.com/)
