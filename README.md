@@ -1,12 +1,12 @@
 # TimePlus For Typecho 
 <p align="center">
 <img src="https://img.shields.io/badge/%E5%BF%AB%E6%9D%A5%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%85%A7%E7%89%87%E5%A2%99%E5%90%A7-8A2BE2?style=for-the-badge"><br />
+<img src="https://img.shields.io/github/languages/code-size/LoCCai/TimePlus?label=TimePlus%20code%20size">
+<img src="https://img.shields.io/github/stars/LoCCai/TimePlus?style=social"><br />
 <img src="https://img.shields.io/badge/Language-javascript-blue?logo=javascript&logoColor=f7cb4f">
 <img src="https://img.shields.io/badge/Language-php-blue?logo=php&logoColor=f7cb4f">
 <img src="https://img.shields.io/badge/Language-html-blue?logo=html5&logoColor=f7cb4f">
 <img src="https://img.shields.io/badge/Language-css-blue?logo=css3&logoColor=f7cb4f"><br />
-<img src="https://img.shields.io/github/languages/code-size/weizwz/fun-animation?label=fun-animation%20code%20size"><br />
-<img src="https://img.shields.io/github/stars/LoCCai/TimePlus?style=social"><br />
 </p>
 
 # 由 [LoCCai](https://loccai.top) 修改 自 [zhheo](https://plog.zhheo.com/)
@@ -23,11 +23,21 @@
 
 对部分代码进行注释，以方便其他开发者进行个人定制或修改
 
-## 使用文档
+## 修改内容
 
-查看[使用文档](https://github.com/LoCCai/TimePlus/wiki)
-
-查看安装教程：[第一次上手](https://github.com/LoCCai/TimePlus/wiki/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8A%E6%89%8B)
+### 瀑布流卡片展示和弹出式图片卡片展示效果修改
+- 左上角添加行：对tag的支持，可以根据tag进行分类展示
+- 左上角添加行：对图片处理的支持（修改弹出式展示的卡片高质量压缩，并添加查看原图按钮）
+- 左下角添加行：对文章slug的支持
+### 左侧底栏内容替换
+- 可选1：数组随机
+- 可选2：一言随机（可选类型）
+### 右侧底栏添加
+- 其他站点传送门
+- 额外的补充信息页（设备信息，其他期望展示的内容等）
+### 关于页面添加
+- 文章、评论、分类、标签、独立页面、访客统计
+- 当前访问信息和网络请求延时
 
 ## 相关链接
 
