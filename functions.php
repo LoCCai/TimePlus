@@ -1,24 +1,76 @@
 <?php
-error_reporting(0);
+
+/**
+ * Escape a value for use in an HTML attribute.
+ */
+function timeplus_escape_attr($value)
+{
+  return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+}
+
+/**
+ * Read the current version from the theme header.
+ */
+function get_theme_info()
+{
+  $index_file = __DIR__ . '/index.php';
+  if (!is_readable($index_file)) {
+    return ['version' => '0.0'];
+  }
+
+  $content = file_get_contents($index_file);
+  if ($content === false || !preg_match('/@version\s+([0-9]+(?:\.[0-9]+)*)/i', $content, $matches)) {
+    return ['version' => '0.0'];
+  }
+
+  return ['version' => $matches[1]];
+}
+
+/**
+ * Fetch the latest published version without blocking the settings page for long.
+ */
+function timeplus_get_latest_version()
+{
+  $context = stream_context_create([
+    'http' => [
+      'timeout' => 3,
+      'follow_location' => 1,
+      'user_agent' => 'TimePlus theme update checker'
+    ]
+  ]);
+  $content = @file_get_contents(
+    'https://plog.zhheo.com/usr/themes/TimePlus/releases.json',
+    false,
+    $context
+  );
+
+  if ($content === false) {
+    return null;
+  }
+
+  $data = json_decode($content, true);
+  if (!is_array($data) || empty($data['tag_name']) || !is_scalar($data['tag_name'])) {
+    return null;
+  }
+
+  $version = trim((string) $data['tag_name']);
+  return preg_match('/^[0-9]+(?:\.[0-9]+)*$/', $version) ? $version : null;
+}
+
 function themeConfig($form)
 {
-  if ($check_info == '1') {
-    echo '<font color=red>' . $message . '</font>';
-    die;
-  }
-  $data = json_decode(file_get_contents('https://plog.zhheo.com/usr/themes/TimePlus/releases.json'), true);
-  $message = $data['tag_name'];
-  
-  // 从 index.php 中获取版本号
   $theme_info = get_theme_info();
   $selfmessage = $theme_info['version'];
-  
-  if ($selfmessage == $message) {
-    echo  'TimePlus&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp当前版本：' . 'v' . $selfmessage . "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" . '最新版本:' . 'v' . $message;
-  } else  if ($selfmessage > $message) {
-    echo  'TimePlus&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp当前版本：' . 'v' . $selfmessage . "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" . '最新版本:' . 'v' . $message;
-  } else  if ($selfmessage < $message) {
-    echo  'TimePlus&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp当前版本：' . 'v' . $selfmessage . "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" . '发现新版本:' . '<span style="color:red;"><b>v ' . $message . '</b></span>&nbsp&nbsp请更新，<a href="https://github.com/zhheo/TimePlus/releases" target="_blank">新版本特性</a>';
+  $latestVersion = timeplus_get_latest_version();
+
+  echo 'TimePlus&nbsp;&nbsp;&nbsp;当前版本：v' . timeplus_escape_attr($selfmessage);
+  if ($latestVersion === null) {
+    echo '&nbsp;&nbsp;&nbsp;<span>暂时无法检查新版本</span>';
+  } elseif (version_compare($selfmessage, $latestVersion, '<')) {
+    echo '&nbsp;&nbsp;&nbsp;发现新版本：<strong style="color:red;">v' . timeplus_escape_attr($latestVersion) . '</strong>';
+    echo '&nbsp;&nbsp;请更新，<a href="https://github.com/zhheo/TimePlus/releases" target="_blank" rel="noopener noreferrer">查看新版本特性</a>';
+  } else {
+    echo '&nbsp;&nbsp;&nbsp;最新版本：v' . timeplus_escape_attr($latestVersion);
   }
   //首页名称
   $IndexName = new Typecho_Widget_Helper_Form_Element_Text('IndexName', NULL, '洪墨时光', _t('首页的名称(必填)'), _t('输入你的首页显示的名称'));
@@ -55,6 +107,30 @@ function themeConfig($form)
   $form->addInput($icp);
   $cnzz = new Typecho_Widget_Helper_Form_Element_Text('cnzz', NULL, '', _t('统计代码'), _t('cnzz或百度..统计代码。可在此处填写处'));
   $form->addInput($cnzz);
+  $siteEstablishedAt = new Typecho_Widget_Helper_Form_Element_Text(
+    'siteEstablishedAt',
+    NULL,
+    '2022-03-03T05:21:00+08:00',
+    _t('建站时间'),
+    _t('使用 ISO 8601 格式，例如 2022-03-03T05:21:00+08:00；留空则不显示运行时长')
+  );
+  $form->addInput($siteEstablishedAt);
+  $enableVisitorInfo = new Typecho_Widget_Helper_Form_Element_Radio(
+    'enableVisitorInfo',
+    ['0' => _t('关闭'), '1' => _t('开启')],
+    '0',
+    _t('显示访客网络信息'),
+    _t('默认关闭。开启后，访客浏览器会向下方配置的第三方接口发送请求，可能涉及 IP 与位置隐私')
+  );
+  $form->addInput($enableVisitorInfo);
+  $visitorInfoEndpoint = new Typecho_Widget_Helper_Form_Element_Text(
+    'visitorInfoEndpoint',
+    NULL,
+    'https://qifu-api.baidubce.com/ip/local/geo/v1/district',
+    _t('访客信息接口'),
+    _t('仅支持 HTTPS；接口需返回 ip 以及 data.country/prov/city/district/continent/isp 字段')
+  );
+  $form->addInput($visitorInfoEndpoint);
 }
 //输出导航
 function themeFields($layout)
@@ -73,17 +149,90 @@ function themeFields($layout)
   $layout->addItem($location);
 }
 
-// 添加获取主题信息的函数
-function get_theme_info() {
-    $index_file = __DIR__ . '/index.php';
-    if (!file_exists($index_file)) {
-        return ['version' => '0.0'];
+/**
+ * Build a safe recursive category tree using Typecho-generated permalinks.
+ */
+function timeplus_get_category_tree()
+{
+  $records = [];
+
+  try {
+    $categories = \Widget\Metas\Category\Rows::alloc();
+    while ($categories->next()) {
+      $id = (int) $categories->mid;
+      if ($id <= 0) {
+        continue;
+      }
+
+      $records[$id] = [
+        'id' => $id,
+        'name' => (string) $categories->name,
+        'permalink' => (string) $categories->permalink,
+        'parent' => (int) $categories->parent
+      ];
     }
-    
-    $content = file_get_contents($index_file);
-    preg_match('/@version\s+(.*)/', $content, $matches);
-    
-    return [
-        'version' => isset($matches[1]) ? trim($matches[1]) : '0.0'
+  } catch (Throwable $error) {
+    return [];
+  }
+
+  if (!$records) {
+    return [];
+  }
+
+  $childrenByParent = [];
+  $rootIds = [];
+  foreach ($records as $id => $record) {
+    $parent = $record['parent'];
+    if ($parent <= 0 || $parent === $id || !isset($records[$parent])) {
+      $rootIds[] = $id;
+      continue;
+    }
+    $childrenByParent[$parent][] = $id;
+  }
+
+  $visited = [];
+  $buildBranch = function ($id, $trail = []) use (&$buildBranch, &$visited, $records, $childrenByParent) {
+    if (!isset($records[$id]) || isset($trail[$id])) {
+      return null;
+    }
+
+    $trail[$id] = true;
+    $visited[$id] = true;
+    $record = $records[$id];
+    $branch = [
+      'id' => $record['id'],
+      'name' => $record['name'],
+      'permalink' => $record['permalink'],
+      'children' => []
     ];
+
+    foreach ($childrenByParent[$id] ?? [] as $childId) {
+      $child = $buildBranch($childId, $trail);
+      if ($child !== null) {
+        $branch['children'][] = $child;
+      }
+    }
+
+    return $branch;
+  };
+
+  $tree = [];
+  foreach ($rootIds as $rootId) {
+    $branch = $buildBranch($rootId);
+    if ($branch !== null) {
+      $tree[] = $branch;
+    }
+  }
+
+  // Preserve cyclic or otherwise disconnected records as recoverable roots.
+  foreach (array_keys($records) as $id) {
+    if (!isset($visited[$id])) {
+      $branch = $buildBranch($id);
+      if ($branch !== null) {
+        $tree[] = $branch;
+      }
+    }
+  }
+
+  return $tree;
 }
