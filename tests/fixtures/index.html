@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/timeplus-enhancements.css">
+  <title>TimePlus browser fixture</title>
+</head>
+<body>
+  <header id="header">
+    <a class="site-brand" href="/"><strong>TimePlus</strong></a>
+    <nav><ul class="nav_links">
+      <li><button class="header-action-button category-panel-trigger" id="open-category-panel" type="button" aria-controls="category-panel" aria-expanded="false">分类</button></li>
+      <li><button class="header-action-button" id="fullscreen" type="button" aria-pressed="false"><span data-fullscreen-label>全屏</span></button></li>
+      <li><button class="header-action-button" type="button" data-panel-target="footer" aria-expanded="false">关于</button></li>
+    </ul></nav>
+  </header>
+  <div id="wrapper">
+    <main id="main">
+      <article class="thumb" data-gallery-id="fixture-gallery">
+        <a class="image timeplus-gallery-trigger" href="/tests/fixtures/fixture-image-1.svg" data-image-index="0"><img src="/tests/fixtures/fixture-image-1.svg" alt="Fixture image"></a>
+        <h2><a href="#fixture">Fixture</a></h2>
+        <div class="content-wrapper"><p>Popup-only content</p></div>
+        <div class="breadcrumb-nav" role="group" aria-label="文章图片">
+          <button class="nav-dot active" type="button" data-index="0" aria-pressed="true"></button>
+          <button class="nav-dot" type="button" data-index="1" aria-pressed="false"></button>
+          <button class="nav-dot" type="button" data-index="2" aria-pressed="false"></button>
+        </div>
+        <a class="timeplus-original-link" href="/tests/fixtures/fixture-image-1.svg">查看原图</a>
+        <script class="timeplus-gallery-data" type="application/json">{"id":"fixture-gallery","context":"archive","images":["/tests/fixtures/fixture-image-1.svg","/tests/fixtures/fixture-image-2.svg","/tests/fixtures/missing-image.svg"],"originals":["/tests/fixtures/fixture-image-1.svg","/tests/fixtures/fixture-image-2.svg","/tests/fixtures/missing-image.svg"],"fallback":"/assets/img/loading.gif"}</script>
+      </article>
+      <article class="thumb" data-gallery-id="fixture-adjacent-gallery">
+        <a class="image timeplus-gallery-trigger" href="/tests/fixtures/fixture-image-2.svg" data-image-index="0"><img src="/tests/fixtures/fixture-image-2.svg" alt="Adjacent article image" loading="lazy" decoding="async"></a>
+        <h2><a href="/tests/fixtures/post.html">Adjacent article</a></h2>
+        <div class="content-wrapper"><p>Adjacent Poptrox article</p></div>
+        <a class="timeplus-original-link" href="/tests/fixtures/fixture-image-2.svg">查看原图</a>
+        <script class="timeplus-gallery-data" type="application/json">{"id":"fixture-adjacent-gallery","context":"archive","images":["/tests/fixtures/fixture-image-2.svg"],"originals":["/tests/fixtures/fixture-image-2.svg"],"fallback":"/assets/img/loading.gif"}</script>
+      </article>
+      <article class="thumb timeplus-no-image-card" data-gallery-id="fixture-empty-gallery">
+        <a class="image timeplus-empty-image" href="/tests/fixtures/post-empty.html" aria-label="进入无图文章页"><svg class="timeplus-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm0 16h16v-3.5l-4.2-4.2-3.3 3.3-2.2-2.2L4 18.7V19Zm4-9a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/></svg><span>暂无可用图片</span></a>
+        <h2><a href="/tests/fixtures/post-empty.html">Invalid image URLs</a></h2>
+        <div class="content-wrapper"><p>正文仍可通过文章页访问。</p></div>
+        <script class="timeplus-gallery-data" type="application/json">{"id":"fixture-empty-gallery","context":"archive","images":[],"originals":[],"fallback":"/assets/img/loading.gif"}</script>
+      </article>
+    </main>
+    <footer id="footer" class="panel" aria-hidden="true"><p>About fixture</p></footer>
+  </div>
+  <div class="category-overlay" id="category-panel" hidden>
+    <section class="category-dialog" role="dialog" aria-modal="true" aria-labelledby="category-panel-title" tabindex="-1">
+      <header class="category-dialog-header"><h2 id="category-panel-title">全部分类</h2><button id="close-category-panel" class="category-dialog-close" type="button">×</button></header>
+      <div class="category-dialog-body"><nav id="category-parent-list" class="category-parent-list"></nav><div id="category-children" class="category-children"></div></div>
+    </section>
+  </div>
+  <script id="timeplus-category-data" type="application/json">[{"id":1,"name":"Root","permalink":"/root","children":[{"id":2,"name":"Child","permalink":"/child","children":[]}]},{"id":3,"name":"Second","permalink":"/second","children":[{"id":4,"name":"Second child","permalink":"/second-child","children":[]}]}]</script>
+  <div id="timeplus-enhancements-config" data-site-established-at="2022-03-03T05:21:00+08:00" data-visitor-info-enabled="0" data-visitor-info-endpoint="">
+    <p data-runtime-row hidden><strong data-runtime-value></strong></p>
+    <div data-performance-row="response" hidden><span data-performance-value="response"></span></div>
+    <div data-performance-row="download" hidden><span data-performance-value="download"></span></div>
+    <div data-performance-row="interactive" hidden><span data-performance-value="interactive"></span></div>
+    <div data-performance-row="load" hidden><span data-performance-value="load"></span></div>
+    <div class="timeplus-visitor-info" data-visitor-info hidden>
+      <p data-visitor-isp-row hidden>网络：<strong data-visitor-isp></strong></p>
+      <p data-visitor-ip-row hidden>IP：<strong data-visitor-ip></strong></p>
+      <p data-visitor-location-row hidden>位置：<strong data-visitor-location></strong></p>
+    </div>
+  </div>
+  <script src="/assets/js/jquery.min.js"></script>
+  <script src="/assets/js/jquery.poptrox.min.js"></script>
+  <script src="/assets/js/browser.min.js"></script>
+  <script src="/assets/js/breakpoints.min.js"></script>
+  <script src="/assets/js/util.js"></script>
+  <script src="/assets/js/main.js"></script>
+  <script src="/assets/js/timeplus-gallery.js"></script>
+  <script src="/assets/js/timeplus-enhancements.js"></script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/timeplus-enhancements.css">
+  <title>TimePlus article fixture</title>
+</head>
+<body>
+  <header id="header">
+    <a class="site-brand" href="/tests/fixtures/index.html"><strong>TimePlus</strong></a>
+    <span class="discription">记录时间里的光</span>
+    <nav aria-label="站点操作"><ul class="nav_links">
+      <li><button class="header-action-button category-panel-trigger" id="open-category-panel" type="button" aria-controls="category-panel" aria-expanded="false">分类</button></li>
+      <li><button class="header-action-button" id="fullscreen" type="button" aria-pressed="false"><span data-fullscreen-label>全屏</span></button></li>
+      <li><button class="header-action-button" type="button" data-panel-target="footer" aria-expanded="false">关于</button></li>
+    </ul></nav>
+  </header>
+  <div id="wrapper">
+    <main class="timeplus-post-main" id="main-content">
+      <article class="timeplus-post" data-gallery-id="fixture-post-gallery">
+        <header class="timeplus-post-header">
+          <h1>山海之间的傍晚</h1>
+          <div class="timeplus-post-meta"><span>2026-08-18</span><span>TimePlus Camera</span><span>上海</span></div>
+        </header>
+        <div class="timeplus-post-gallery" aria-label="文章图片">
+          <a class="timeplus-post-image timeplus-gallery-trigger" href="/tests/fixtures/fixture-image-1.svg" data-image-index="0" aria-label="查看第 1 张图片"><img src="/tests/fixtures/fixture-image-1.svg" alt="山海之间的傍晚，第 1 张" decoding="async"></a>
+          <a class="timeplus-post-image timeplus-gallery-trigger" href="/tests/fixtures/fixture-image-2.svg" data-image-index="1" aria-label="查看第 2 张图片"><img src="/tests/fixtures/fixture-image-2.svg" alt="山海之间的傍晚，第 2 张" loading="lazy" decoding="async"></a>
+        </div>
+        <div class="timeplus-post-content"><p>潮水越过礁石，晚霞把海面染成了温暖的橙色。这段正文即使没有图片也应完整展示。</p><p>这里用于验证文章详情页的标题、图片、正文和元数据布局。</p></div>
+        <footer class="timeplus-post-taxonomy"><span><a href="#landscape">风景</a></span><span><a href="#sunset">日落</a></span></footer>
+        <div class="timeplus-post-caption-template" hidden>
+          <h2>山海之间的傍晚</h2>
+          <div class="tag-info tag-info-bottom"><span>TimePlus Camera</span><span>上海</span></div>
+          <div class="breadcrumb-nav" role="group" aria-label="文章图片">
+            <button class="nav-dot active" type="button" data-index="0" aria-label="第 1 张图片" aria-pressed="true"></button>
+            <button class="nav-dot" type="button" data-index="1" aria-label="第 2 张图片" aria-pressed="false"></button>
+          </div>
+          <a class="timeplus-original-link" href="/tests/fixtures/fixture-image-1.svg">查看原图</a>
+        </div>
+        <script class="timeplus-gallery-data" type="application/json">{"id":"fixture-post-gallery","context":"post","images":["/tests/fixtures/fixture-image-1.svg","/tests/fixtures/fixture-image-2.svg"],"originals":["/tests/fixtures/fixture-image-1.svg","/tests/fixtures/fixture-image-2.svg"],"fallback":"/assets/img/loading.gif"}</script>
+      </article>
+      <section id="comments" class="timeplus-comments" aria-labelledby="comments-title"><h2 id="comments-title">评论</h2><p>尚无评论，欢迎留下你的想法。</p></section>
+    </main>
+    <footer id="footer" class="panel" aria-hidden="true"><p>About TimePlus</p></footer>
+  </div>
+  <div class="category-overlay" id="category-panel" hidden>
+    <section class="category-dialog" role="dialog" aria-modal="true" aria-labelledby="category-panel-title" tabindex="-1">
+      <header class="category-dialog-header"><h2 id="category-panel-title">全部分类</h2><button id="close-category-panel" class="category-dialog-close" type="button" aria-label="关闭分类面板">×</button></header>
+      <div class="category-dialog-body"><nav id="category-parent-list" class="category-parent-list"></nav><div id="category-children" class="category-children"></div></div>
+    </section>
+  </div>
+  <script id="timeplus-category-data" type="application/json">[{"id":1,"name":"风景","permalink":"/landscape","children":[{"id":2,"name":"日落","permalink":"/sunset","children":[]}]}]</script>
+  <script src="/assets/js/jquery.min.js"></script>
+  <script src="/assets/js/jquery.poptrox.min.js"></script>
+  <script src="/assets/js/browser.min.js"></script>
+  <script src="/assets/js/breakpoints.min.js"></script>
+  <script src="/assets/js/util.js"></script>
+  <script src="/assets/js/main.js"></script>
+  <script src="/assets/js/timeplus-gallery.js"></script>
+  <script src="/assets/js/timeplus-enhancements.js"></script>
+</body>
+</html>

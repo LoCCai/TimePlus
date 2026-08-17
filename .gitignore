@@ -2,3 +2,7 @@
 **/.DS_Store
 buildInfo.md
 *.sh
+node_modules/
+playwright-report/
+test-results/
+.timeplus-build/

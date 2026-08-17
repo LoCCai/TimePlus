@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">橙色海景测试图片</title>
+  <desc id="desc">用于 TimePlus 图库切换测试的第二张稳定矢量图片。</desc>
+  <defs>
+    <linearGradient id="sunset" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3b2449"/>
+      <stop offset=".58" stop-color="#cf6a5c"/>
+      <stop offset="1" stop-color="#efb366"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#sunset)"/>
+  <circle cx="600" cy="350" r="105" fill="#ffe1a8"/>
+  <path d="M0 520c180-44 330 48 515 10s359-61 685 18v252H0z" fill="#173b55"/>
+  <path d="M0 585c220-55 390 60 605 4s359-29 595 22" fill="none" stroke="#f9d6a2" stroke-width="18" opacity=".5"/>
+  <path d="M170 190q32-27 64 0m18 12q27-22 54 0" fill="none" stroke="#281d36" stroke-linecap="round" stroke-width="9"/>
+</svg>

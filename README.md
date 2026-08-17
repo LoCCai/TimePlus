@@ -18,6 +18,12 @@
 
 本主题基于原作者已停止维护的 [Time 主题](https://github.com/wclk/time)改进。TimePlus 寓意让这个主题继续延续下去；主题包含个人设计偏好，如不喜欢这些改动，也可以尝试原主题。
 
+## 运行要求
+
+- Typecho 1.2.x
+- PHP 8.1 或更高版本
+- Chrome、Edge、Firefox 或现代 Safari（不再支持 IE）
+
 ## LoCCai 修改说明
 
 本分支在上游版本基础上替换了一些样式、添加了一些功能，并对部分代码添加注释，方便其他开发者进行个人定制。
@@ -34,6 +40,14 @@
 - 左上角增加标签信息，支持按标签分类展示
 - 左上角增加图片处理支持，改进弹出卡片压缩效果并提供查看原图按钮
 - 左下角增加文章 slug 信息
+- 图片字段支持 HTTP(S)、协议相对和站内根相对地址；空行及危险协议会被忽略
+- 文章正文仅在图片弹窗或文章详情页中展示
+
+### 文章详情页
+
+- 展示全部图片、正文、设备、地点、分类、标签与评论
+- 无有效图片时仍可正常阅读正文
+- 首页、分类页和文章页复用统一导航与站点信息
 
 ### 页面底栏
 
@@ -58,6 +72,20 @@
 查看[使用文档](https://github.com/LoCCai/TimePlus/wiki)
 
 查看安装教程：[第一次上手](https://github.com/LoCCai/TimePlus/wiki/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8A%E6%89%8B)
+
+## 开发与验证
+
+生成的 CSS 已随主题提交，普通用户无需安装 Node.js。开发者可运行：
+
+```bash
+npm install
+npm run vendor:jquery
+npm run build:css
+npm test
+npm run test:e2e
+```
+
+`Biglogo`（详细介绍）和 `cnzz`（统计代码）允许管理员填写受信任的 HTML/脚本；其他主题配置会按文本或受限 URL 处理。
 
 ## 相关链接
 

@@ -1,6 +1,6 @@
-/// Makes an element's :before pseudoelement a FontAwesome icon.
+/// Makes an element's :before pseudoelement a local text glyph.
 /// @param {string} $content Optional content value to use.
-/// @param {string} $category Optional category to use.
+/// @param {string} $category Retained for backward-compatible call sites.
 /// @param {string} $where Optional pseudoelement to target (before or after).
 @mixin icon($content: false, $category: regular, $where: before) {
 
@@ -12,27 +12,14 @@
 			content: $content;
 		}
 
-		-moz-osx-font-smoothing: grayscale;
-		-webkit-font-smoothing: antialiased;
 		display: inline-block;
+		font-family: sans-serif;
 		font-style: normal;
 		font-variant: normal;
+		font-weight: 700;
 		text-rendering: auto;
 		line-height: 1;
 		text-transform: none !important;
-
-		@if ($category == brands) {
-			font-family: 'Font Awesome 5 Brands';
-		}
-		@elseif ($category == solid) {
-			font-family: 'Font Awesome 5 Free';
-			font-weight: 900;
-		}
-		@else {
-			font-family: 'Font Awesome 5 Free';
-			font-weight: 400;
-		}
-
 	}
 
 }

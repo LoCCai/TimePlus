@@ -2,605 +2,98 @@
 /**
  * 一款简约的相册主题
  * @package 洪墨时光
- * @author zhheo
- * @version 2.19
- * @link https://zhheo.com/
+ * @author zhheo & LoCCai
+ * @version 2.20
+ * @link https://github.com/LoCCai/TimePlus
  */
+if (!defined('__TYPECHO_ROOT_DIR__')) {
+  exit;
+}
+
+$this->need('header.php');
+$timeplusItemIndex = 0;
+$timeplusThumbnailRule = (string) $this->options->zmki_ys;
+$timeplusFullImageRule = (string) $this->options->zmki_sy;
 ?>
-<!DOCTYPE html>
-<html>
-
-<head>
-  <title><?php $this->options->IndexName(); ?> - <?php $this->options->Indexdict() ?> </title>
-  <meta http-equiv="content-type" content="text/html; charset=<?php $this->options->charset(); ?>" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <meta name="keywords" content="<?php $this->options->keywords(); ?>" />
-  <meta name="description" content="<?php $this->options->description(); ?>" />
-  <link rel="apple-touch-icon" href="<?php $this->options->AppleIcon(); ?>">
-  <meta name="apple-mobile-web-app-title" content="<?php $this->options->IndexName(); ?>">
-  <link rel="bookmark" href="<?php $this->options->AppleIcon(); ?>">
-  <link rel="apple-touch-icon-precomposed" sizes="180x180" href="<?php $this->options->AppleIcon(); ?>">
-  <link rel="icon" href="<?php $this->options->IconUrl() ?>">
-  <link rel="stylesheet" type="text/css" href="<?php $this->options->themeUrl('assets/css/main.css'); ?>" />
-  <link rel="stylesheet" type="text/css" href="<?php $this->options->themeUrl('assets/css/timeplus-enhancements.css'); ?>" />
-  <link rel="stylesheet" type="text/css" href="<?php $this->options->themeUrl('assets/css/noscript.css'); ?>" />
-  <noscript>
-    <link rel="stylesheet" href="<?php $this->options->themeUrl('assets/css/noscript.css'); ?>" />
-  </noscript>
-  <link rel="stylesheet" href="https://cdn3.codesign.qq.com/icons/dDyopjDLkGjVe1g/latest/iconfont.css">
-</head>
-
-<body class="is-preload">
-  <header id="header">
-    <a href="<?php $this->options->siteUrl(); ?>"><img class="site-logo" src="<?php $this->options->IconUrl(); ?>"></a>
-    <h1><a href="<?php $this->options->siteUrl(); ?>"><strong><?php $this->options->zmkiabout() ?></strong></h1></a>
-    <span class="discription"><?php $this->options->zmkiabouts() ?></span>
-    <nav>
-      <ul class="nav_links">
-
-
-        <li class="nav-item">
-          <button
-            class="icon solid fa-info-circle nav-item-name category-panel-trigger"
-            id="open-category-panel"
-            type="button"
-            aria-haspopup="dialog"
-            aria-controls="category-panel"
-            aria-expanded="false"
-          >分类</button>
-        </li>
-
-
-
-        <li><a type="button" id="fullscreen" class="btn btn-default visible-lg visible-md" alt="切换全屏">
-          <i class="iconfont icon-quanping"></i>
-              <use xlink:href="#icon-zmki-ziyuan-copy"></use>
-            </svg></a></li>
-        <li><a href="#footer">关于</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <!-- Wrapper -->
-  <div id="wrapper">
-    <!-- Header -->
-    <!-- Main -->
-    <div id="main">
-
+    <main id="main">
       <?php while ($this->next()): ?>
-        <article class="thumb img-area">
-          <?php 
-          // 将多行图片链接分割成数组
-          $images = array_filter(explode("\n", $this->fields->img));
-          // 获取第一张图片作为缩略图
-          $firstImage = trim($images[0]); 
-          ?>
-          <a class="image my-photo" alt="loading" href="<?php echo $firstImage; ?><?php $this->options->zmki_sy() ?>">
-            <img class="zmki_px my-photo"
-              onerror="this.src='<?php $this->options->themeUrl('assets/img/loading.gif'); ?>';this.onerror=null"
-              data-src="<?php echo $firstImage; ?><?php $this->options->zmki_ys() ?>" />
-          </a>
-          <h2><?php $this->title() ?></h2>
-          <?php if($this->content): ?>
-          <div class="content-wrapper">
-            <p><?php $this->content('内容加载中...'); ?></p>
-          </div>
+        <?php
+        $timeplusItemIndex++;
+        $timeplusGalleryId = 'timeplus-gallery-' . (int) $this->cid;
+        $timeplusTitle = trim((string) $this->title);
+        $timeplusPermalink = timeplus_safe_url((string) $this->permalink, true) ?: (string) $this->options->siteUrl;
+        $timeplusImages = timeplus_normalize_images((string) $this->fields->img);
+        $timeplusFullImages = [];
+        foreach ($timeplusImages as $timeplusImage) {
+          $timeplusFullImage = timeplus_append_image_rule($timeplusImage, $timeplusFullImageRule);
+          if ($timeplusFullImage !== null) {
+            $timeplusFullImages[] = $timeplusFullImage;
+          }
+        }
+        $timeplusGalleryData = [
+          'id' => $timeplusGalleryId,
+          'context' => 'archive',
+          'images' => $timeplusFullImages,
+          'originals' => $timeplusImages,
+          'fallback' => (string) $this->options->themeUrl . 'assets/img/loading.gif'
+        ];
+        ?>
+        <article class="thumb img-area<?php echo $timeplusFullImages === [] ? ' timeplus-no-image-card' : ''; ?>" data-gallery-id="<?php echo timeplus_escape_attr($timeplusGalleryId); ?>">
+          <?php if ($timeplusFullImages !== []): ?>
+            <?php $timeplusThumbnail = timeplus_append_image_rule($timeplusImages[0], $timeplusThumbnailRule) ?: $timeplusImages[0]; ?>
+            <a class="image my-photo timeplus-gallery-trigger" href="<?php echo timeplus_escape_attr($timeplusFullImages[0]); ?>" data-image-index="0" aria-label="查看“<?php echo timeplus_escape_attr($timeplusTitle); ?>”图片">
+              <img
+                class="zmki_px my-photo"
+                src="<?php echo timeplus_escape_attr($timeplusThumbnail); ?>"
+                alt="<?php echo timeplus_escape_attr($timeplusTitle); ?>"
+                loading="<?php echo $timeplusItemIndex <= 2 ? 'eager' : 'lazy'; ?>"
+                decoding="async"
+                data-fallback-src="<?php $this->options->themeUrl('assets/img/loading.gif'); ?>"
+              >
+            </a>
+          <?php else: ?>
+            <a class="image timeplus-empty-image" href="<?php echo timeplus_escape_attr($timeplusPermalink); ?>" aria-label="进入“<?php echo timeplus_escape_attr($timeplusTitle); ?>”文章页">
+              <?php echo timeplus_icon('image'); ?><span>暂无可用图片</span>
+            </a>
           <?php endif; ?>
-          <li class="tag-info tag-info-bottom">
-            <?php if($this->fields->device): ?>
-            <span class="tag-device"><i class="iconfont icon-camera-lens-line"></i><?php echo $this->fields->device(); ?></span>
+
+          <h2><a href="<?php echo timeplus_escape_attr($timeplusPermalink); ?>"><?php echo timeplus_escape_html($timeplusTitle); ?></a></h2>
+          <div class="content-wrapper"><?php $this->content(); ?></div>
+          <div class="tag-info tag-info-bottom">
+            <?php if (trim((string) $this->fields->device) !== ''): ?>
+              <span class="tag-device"><?php echo timeplus_icon('camera'); ?><?php echo timeplus_escape_html((string) $this->fields->device); ?></span>
             <?php endif; ?>
-            <?php if($this->fields->location): ?>
-            <span class="tag-location"><i class="iconfont icon-map-pin-2-line"></i><?php echo $this->fields->location(); ?></span>
+            <?php if (trim((string) $this->fields->location) !== ''): ?>
+              <span class="tag-location"><?php echo timeplus_icon('location'); ?><?php echo timeplus_escape_html((string) $this->fields->location); ?></span>
             <?php endif; ?>
-            <span class="tag-time"><i class="iconfont icon-time-line"></i><?php $this->date(); ?></span>
-          </li>
-          <li class="tag-info">
+            <span class="tag-time"><?php echo timeplus_icon('clock'); ?><?php $this->date(); ?></span>
+          </div>
+          <div class="tag-info">
             <span class="tag-categorys"><?php $this->category(''); ?></span>
-            <?php if($this->tags): ?>
-            <span class="tag-list"><?php $this->tags('', true); ?></span>
-            <?php endif; ?>
-          </li>
-          <!-- 只有当图片数量大于1时才显示面包屑导航 -->
-          <?php if(count($images) > 1): ?>
-          <div class="breadcrumb-nav" data-images='<?php echo json_encode($images); ?>'>
-            <?php foreach($images as $index => $image): ?>
-            <span class="nav-dot <?php echo $index === 0 ? 'active' : ''; ?>" data-index="<?php echo $index; ?>"></span>
-            <?php endforeach; ?>
+            <?php if ($this->tags): ?><span class="tag-list"><?php $this->tags('', true); ?></span><?php endif; ?>
           </div>
+          <?php if (count($timeplusFullImages) > 1): ?>
+            <div class="breadcrumb-nav" role="group" aria-label="文章图片">
+              <?php foreach ($timeplusFullImages as $timeplusImageIndex => $_timeplusImage): ?>
+                <button class="nav-dot<?php echo $timeplusImageIndex === 0 ? ' active' : ''; ?>" type="button" data-index="<?php echo $timeplusImageIndex; ?>" aria-label="第 <?php echo $timeplusImageIndex + 1; ?> 张图片" aria-pressed="<?php echo $timeplusImageIndex === 0 ? 'true' : 'false'; ?>"></button>
+              <?php endforeach; ?>
+            </div>
           <?php endif; ?>
+          <?php if ($timeplusFullImages !== []): ?>
+            <a class="timeplus-original-link" href="<?php echo timeplus_escape_attr($timeplusImages[0]); ?>" target="_blank" rel="noopener noreferrer">查看原图</a>
+          <?php endif; ?>
+          <script class="timeplus-gallery-data" type="application/json"><?php echo timeplus_json_encode($timeplusGalleryData); ?></script>
         </article>
       <?php endwhile; ?>
-      
-      <!-- 分页导航 -->
+
       <?php
-        $total = ceil($this->getTotal() / $this->parameter->pageSize);
-        if($total > 1):
+      $timeplusPageSize = max(1, (int) $this->parameter->pageSize);
+      $timeplusTotalPages = (int) ceil($this->getTotal() / $timeplusPageSize);
+      if ($timeplusTotalPages > 1):
       ?>
-      <div class="pagination-container">
-        <?php 
-          $current = $this->_currentPage;
-          $max_pages = 6; // 最多显示的页码数
-          
-          // 计算显示的页码范围
-          $start = max(1, min($current - floor($max_pages/2), $total - $max_pages + 1));
-          $end = min($start + $max_pages - 1, $total);
-          
-          // 获取当前分类路径
-          $category = '';
-          if ($this->is('category')) {
-            $category = $this->getArchiveSlug();
-          }
-          
-          // 上一页按钮
-          if ($current > 1): 
-            $prevUrl = $category ? $this->options->siteUrl . 'index.php/category/' . $category . '/' . ($current-1) . '/' : $this->options->siteUrl . 'index.php/page/' . ($current-1);
-            echo '<a href="' . $prevUrl . '" class="page-btn prev-btn">上一页</a>';
-          endif;
-
-          // 页码按钮
-          for ($i = $start; $i <= $end; $i++):
-            if ($i == $current): ?>
-              <span class="page-btn current"><?php echo $i; ?></span>
-            <?php else: 
-              $pageUrl = $category ? $this->options->siteUrl . 'index.php/category/' . $category . '/' . $i . '/' : $this->options->siteUrl . 'index.php/page/' . $i;
-            ?>
-              <a href="<?php echo $pageUrl; ?>" class="page-btn"><?php echo $i; ?></a>
-            <?php endif;
-          endfor;
-
-          // 下一页按钮
-          if ($current < $total): 
-            $nextUrl = $category ? $this->options->siteUrl . 'index.php/category/' . $category . '/' . ($current+1) . '/' : $this->options->siteUrl . 'index.php/page/' . ($current+1);
-            echo '<a href="' . $nextUrl . '" class="page-btn next-btn">下一页</a>';
-          endif; ?>
-      </div>
+        <nav class="pagination-container" aria-label="文章分页">
+          <?php $this->pageNav('上一页', '下一页', 3, '…'); ?>
+        </nav>
       <?php endif; ?>
-
-      <!-- 原有的 load-more div -->
-      <div id="load-more" data-page="1" data-total-pages="<?php echo $total; ?>"></div>
-    </div>
-
-      <!-- Footer -->
-      <footer id="footer" class="panel">
-            <div id="about">
-              <section>
-                <h2>关于<?php $this->options->IndexName() ?></h2>
-                <p><?php echo $this->options->Biglogo(); ?></p>
-              </section>
-              <section>
-                <h2>联系我</h2>
-                <ul class="icons">
-                  <li><a class="contact_link" href="<?php $this->options->xxhome() ?>" target="_blank"
-                      rel="noopener nofollow"><i class="iconfont icon-shouye"></i></a></li>
-                  <li><a class="contact_link" href="<?php $this->options->xxweibo() ?>" target="_blank"
-                      rel="noopener nofollow"><i class="iconfont icon-weibo"></i></a></li>
-                  <li><a class="contact_link" href="<?php $this->options->xxgithub() ?> " target="_blank"
-                      rel="noopener nofollow"><i class="iconfont icon-github"></i></a></li>
-                </ul>
-              </section>
-              <section class="timeplus-site-insights" aria-labelledby="timeplus-insights-title">
-                <h2 id="timeplus-insights-title">站点信息</h2>
-                <div
-                  id="timeplus-enhancements-config"
-                  data-site-established-at="<?php echo timeplus_escape_attr($this->options->siteEstablishedAt); ?>"
-                  data-visitor-info-enabled="<?php echo $this->options->enableVisitorInfo === '1' ? '1' : '0'; ?>"
-                  data-visitor-info-endpoint="<?php echo timeplus_escape_attr($this->options->visitorInfoEndpoint); ?>"
-                >
-                  <p class="timeplus-runtime" data-runtime-row hidden>
-                    已运行：<strong data-runtime-value></strong>
-                  </p>
-                  <dl class="timeplus-performance" aria-label="页面性能">
-                    <div data-performance-row="response" hidden>
-                      <dt>服务器响应</dt>
-                      <dd data-performance-value="response"></dd>
-                    </div>
-                    <div data-performance-row="download" hidden>
-                      <dt>内容下载</dt>
-                      <dd data-performance-value="download"></dd>
-                    </div>
-                    <div data-performance-row="interactive" hidden>
-                      <dt>可交互</dt>
-                      <dd data-performance-value="interactive"></dd>
-                    </div>
-                    <div data-performance-row="load" hidden>
-                      <dt>页面加载</dt>
-                      <dd data-performance-value="load"></dd>
-                    </div>
-                  </dl>
-                  <div class="timeplus-visitor-info" data-visitor-info hidden>
-                    <p data-visitor-isp-row hidden>网络：<strong data-visitor-isp></strong></p>
-                    <p data-visitor-ip-row hidden>IP：<strong data-visitor-ip></strong></p>
-                    <p data-visitor-location-row hidden>位置：<strong data-visitor-location></strong></p>
-                  </div>
-                </div>
-              </section>
-              <div class="footer-meta" style="color: #b5b5b5; font-size: 0.8em;">
-                <?php $this->options->cnzz() ?>
-                <div class="copyright-info">
-                    <span class="copyright">&copy; 设计 ZHHEO & ZMKI</span>
-                    <span class="theme">主题：<a href="https://github.com/zhheo/TimePlus" target="_blank" rel="noopener nofollow">洪墨时光</a></span>
-                    <?php if ($this->options->police): ?>
-                    <span class="police">
-                        <img src="<?php $this->options->themeUrl('assets/img/police.png'); ?>" alt="公安备案" style="vertical-align: middle; width: 14px;">
-                        <a href="https://beian.mps.gov.cn/#/query/webSearch" target="_blank" rel="noopener nofollow"><?php $this->options->police(); ?></a>
-                    </span>
-                    <?php endif; ?>
-                    <?php if ($this->options->icp): ?>
-                    <span class="icp">
-                        <a href="http://beian.miit.gov.cn/" target="_blank" rel="noopener nofollow"><?php $this->options->icp(); ?></a>
-                    </span>
-                    <?php endif; ?>
-                </div>
-              </div>
-            </div>
-      </footer>
-      <script type="text/javascript">
-        function isInSight(el) {
-          const bound = el.getBoundingClientRect();
-          const clientHeight = window.innerHeight;
-          //如果只考虑向下滚动加载
-          //const clientWidth=window.innerWeight;
-          return bound.top <= clientHeight + 100;
-        }
-
-        let index = 0;
-        function checkImgs() {
-          const imgs = document.querySelectorAll('.my-photo');
-          for (let i = index; i < imgs.length; i++) {
-            if (isInSight(imgs[i])) {
-              loadImg(imgs[i]);
-              index = i;
-            }
-          }
-          // Array.from(imgs).forEach(el => {
-          //   if (isInSight(el)) {
-          //     loadImg(el);
-          //   }
-          // })
-        }
-
-        function loadImg(el) {
-          if (!el.src) {
-            const source = el.dataset.src;
-            el.src = source;
-          }
-        }
-
-        function throttle(fn, mustRun = 10) {
-          const timer = null;
-          let previous = null;
-          return function () {
-            const now = new Date();
-            const context = this;
-            const args = arguments;
-            if (!previous) {
-              previous = now;
-            }
-            const remaining = now - previous;
-            if (mustRun && remaining >= mustRun) {
-              fn.apply(context, args);
-              previous = now;
-            }
-          }
-        }
-      </script>
-      <script>
-        window.onload = checkImgs;
-        window.onscroll = throttle(checkImgs);
-      </script>
-      <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        let isTransitioning = false;
-        
-        // 添加函数来控制背景滚动
-        function disableBackgroundScroll() {
-          document.body.style.overflow = 'hidden';
-        }
-        
-        function enableBackgroundScroll() {
-          document.body.style.overflow = '';
-        }
-        
-        // 监听浮窗的打开和关闭
-        const observer = new MutationObserver(function(mutations) {
-          mutations.forEach(function(mutation) {
-            if (mutation.addedNodes.length) {
-              const popup = document.querySelector('.poptrox-popup');
-              // 只有当浮窗存在且是可见的时候才禁用滚动
-              if (popup && popup.style.display !== 'none' && popup.style.visibility !== 'hidden') {
-                // 使用 setTimeout 确保浮窗完全显示后再禁用滚动
-                setTimeout(() => {
-                  disableBackgroundScroll();
-                }, 100);
-              }
-            } else if (mutation.removedNodes.length) {
-              const popup = mutation.removedNodes[0];
-              if (popup.classList && popup.classList.contains('poptrox-popup')) {
-                enableBackgroundScroll();
-              }
-            }
-          });
-        });
-        
-        // 开始观察 DOM 变化
-        observer.observe(document.body, { childList: true });
-        
-        document.addEventListener('mouseover', function(e) {
-          // 如果不是导航点或者是当前激活的导航点,则直接返回
-          if (!e.target.classList.contains('nav-dot') || e.target.classList.contains('active')) return;
-          if (isTransitioning) return; // 如果正在切换则忽略新的切换请求
-          
-          const nav = e.target.closest('.breadcrumb-nav');
-          if (!nav) return;
-          
-          const dots = nav.querySelectorAll('.nav-dot');
-          const images = JSON.parse(nav.dataset.images);
-          const index = parseInt(e.target.dataset.index);
-          const popup = nav.closest('.poptrox-popup');
-          
-          if (!popup) return;
-          
-          const track = popup.querySelector('.pic-swipe-track');
-          if (track) {
-            track.dataset.currentIndex = index;
-            const slide = track.querySelector('.pic-swipe-slide');
-            const slideWidth = slide ? slide.offsetWidth : track.offsetWidth;
-            track.style.transition = 'transform 0.3s ease-out';
-            track.style.transform = 'translateX(-' + (index * slideWidth) + 'px)';
-          } else {
-            const img = popup.querySelector('.pic img');
-            if (img) {
-              isTransitioning = true;
-              img.style.transition = 'opacity 0.3s ease-in-out';
-              img.style.opacity = '0';
-              setTimeout(() => {
-                img.src = images[index] + '<?php $this->options->zmki_sy() ?>';
-                img.onload = function() {
-                  img.style.opacity = '1';
-                  isTransitioning = false;
-                };
-                img.onerror = function() { isTransitioning = false; };
-              }, 300);
-            }
-          }
-          
-          dots.forEach(dot => dot.classList.remove('active'));
-          e.target.classList.add('active');
-        });
-        
-        // 修改滚轮事件监听
-        document.addEventListener('wheel', function(e) {
-          const popup = e.target.closest('.poptrox-popup');
-          if (!popup) return;
-          
-          e.preventDefault(); // 阻止默认滚动行为
-          
-          const nav = popup.querySelector('.breadcrumb-nav');
-          if (!nav) return;
-          
-          if (isTransitioning) return; // 如果正在切换则忽略新的切换请求
-          
-          const dots = nav.querySelectorAll('.nav-dot');
-          const images = JSON.parse(nav.dataset.images);
-          const currentIndex = Array.from(dots).findIndex(dot => dot.classList.contains('active'));
-          
-          // 根据滚动方向确定下一个索引
-          let nextIndex;
-          if (Math.abs(e.deltaY) === 0) return; // 忽略值为0的滚动
-          
-          if (e.deltaMode === 0) { // Pixel scrolling
-            if (e.deltaY > 0) {
-              nextIndex = (currentIndex + 1) % images.length;
-            } else {
-              nextIndex = (currentIndex - 1 + images.length) % images.length;
-            }
-          } else { // Line or page scrolling
-            if (e.deltaY > 0) {
-              nextIndex = (currentIndex + 1) % images.length;
-            } else {
-              nextIndex = (currentIndex - 1 + images.length) % images.length;
-            }
-          }
-          
-          const track = popup.querySelector('.pic-swipe-track');
-          if (track) {
-            track.dataset.currentIndex = nextIndex;
-            const slide = track.querySelector('.pic-swipe-slide');
-            const slideWidth = slide ? slide.offsetWidth : track.offsetWidth;
-            track.style.transition = 'transform 0.3s ease-out';
-            track.style.transform = 'translateX(-' + (nextIndex * slideWidth) + 'px)';
-            dots.forEach(dot => dot.classList.remove('active'));
-            dots[nextIndex].classList.add('active');
-          } else {
-            const img = popup.querySelector('.pic img');
-            if (img) {
-              isTransitioning = true;
-              img.style.transition = 'opacity 0.3s ease-in-out';
-              img.style.opacity = '0';
-              setTimeout(() => {
-                img.src = images[nextIndex] + '<?php $this->options->zmki_sy() ?>';
-                img.onload = function() {
-                  img.style.opacity = '1';
-                  isTransitioning = false;
-                };
-                img.onerror = function() { isTransitioning = false; };
-              }, 300);
-              dots.forEach(dot => dot.classList.remove('active'));
-              dots[nextIndex].classList.add('active');
-            }
-          }
-        }, { passive: false });
-        
-        // nav-next/nav-previous 点击：多图文章内先切换同文章图片，最后一张/第一张才切换文章
-        document.addEventListener('click', function(e) {
-          const navNext = e.target.closest('.nav-next');
-          const navPrevious = e.target.closest('.nav-previous');
-          if (!navNext && !navPrevious) return;
-          
-          const popup = (navNext || navPrevious).closest('.poptrox-popup');
-          if (!popup) return;
-          
-          const nav = popup.querySelector('.breadcrumb-nav');
-          if (!nav) return; // 单图文章，交给 Poptrox 默认处理
-          
-          if (isTransitioning) return;
-          
-          const dots = nav.querySelectorAll('.nav-dot');
-          const images = JSON.parse(nav.dataset.images);
-          const currentIndex = Array.from(dots).findIndex(dot => dot.classList.contains('active'));
-          
-          let nextIndex;
-          let handled = false;
-          
-          if (navNext) {
-            if (currentIndex < images.length - 1) {
-              nextIndex = currentIndex + 1;
-              handled = true;
-            }
-          } else {
-            if (currentIndex > 0) {
-              nextIndex = currentIndex - 1;
-              handled = true;
-            }
-          }
-          
-          if (handled) {
-            e.preventDefault();
-            e.stopPropagation();
-            const track = popup.querySelector('.pic-swipe-track');
-            if (track) {
-              track.dataset.currentIndex = nextIndex;
-              const slide = track.querySelector('.pic-swipe-slide');
-              const slideWidth = slide ? slide.offsetWidth : track.offsetWidth;
-              track.style.transition = 'transform 0.3s ease-out';
-              track.style.transform = 'translateX(-' + (nextIndex * slideWidth) + 'px)';
-            } else {
-              const img = popup.querySelector('.pic img');
-              if (img) {
-                isTransitioning = true;
-                img.style.transition = 'opacity 0.3s ease-in-out';
-                img.style.opacity = '0';
-                setTimeout(() => {
-                  img.src = images[nextIndex] + '<?php $this->options->zmki_sy() ?>';
-                  img.onload = function() {
-                    img.style.opacity = '1';
-                    isTransitioning = false;
-                  };
-                  img.onerror = function() { isTransitioning = false; };
-                }, 300);
-              }
-            }
-            dots.forEach(dot => dot.classList.remove('active'));
-            dots[nextIndex].classList.add('active');
-          }
-        }, true);
-        
-        // 快捷键（左/右方向键、空格）：与 nav 按钮相同逻辑
-        document.addEventListener('keydown', function(e) {
-          const overlay = document.querySelector('.poptrox-overlay');
-          if (!overlay || overlay.style.display === 'none') return;
-          const popup = overlay.querySelector('.poptrox-popup');
-          if (!popup) return;
-          
-          const isNext = e.keyCode === 39; // 右方向键
-          const isPrevious = e.keyCode === 37 || e.keyCode === 32; // 左方向键、空格
-          if (!isNext && !isPrevious) return;
-          
-          const nav = popup.querySelector('.breadcrumb-nav');
-          if (!nav) return;
-          
-          if (isTransitioning) return;
-          
-          const dots = nav.querySelectorAll('.nav-dot');
-          const images = JSON.parse(nav.dataset.images);
-          const currentIndex = Array.from(dots).findIndex(dot => dot.classList.contains('active'));
-          const img = popup.querySelector('.pic img');
-          if (!img) return;
-          
-          let nextIndex;
-          let handled = false;
-          
-          if (isNext) {
-            if (currentIndex < images.length - 1) {
-              nextIndex = currentIndex + 1;
-              handled = true;
-            }
-          } else {
-            if (currentIndex > 0) {
-              nextIndex = currentIndex - 1;
-              handled = true;
-            }
-          }
-          
-          if (handled) {
-            e.preventDefault();
-            e.stopPropagation();
-            isTransitioning = true;
-            
-            img.style.transition = 'opacity 0.3s ease-in-out';
-            img.style.opacity = '0';
-            
-            setTimeout(() => {
-              img.src = images[nextIndex] + '<?php $this->options->zmki_sy() ?>';
-              
-              img.onload = function() {
-                img.style.opacity = '1';
-                isTransitioning = false;
-              };
-              
-              img.onerror = function() {
-                isTransitioning = false;
-              };
-            }, 300);
-            
-            dots.forEach(dot => dot.classList.remove('active'));
-            dots[nextIndex].classList.add('active');
-          }
-        }, true);
-      });
-      </script>
-  </div>
-  <?php
-    $timeplusCategoryTree = timeplus_get_category_tree();
-    $timeplusCategoryJson = json_encode(
-      $timeplusCategoryTree,
-      JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
-    );
-    if ($timeplusCategoryJson === false) {
-      $timeplusCategoryJson = '[]';
-    }
-  ?>
-  <div class="category-overlay" id="category-panel" hidden>
-    <section
-      class="category-dialog"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="category-panel-title"
-      tabindex="-1"
-    >
-      <header class="category-dialog-header">
-        <div>
-          <h2 id="category-panel-title">全部分类</h2>
-          <a class="category-all-link" href="<?php $this->options->siteUrl(); ?>">查看全部内容</a>
-        </div>
-        <button class="category-dialog-close" id="close-category-panel" type="button" aria-label="关闭分类面板">&times;</button>
-      </header>
-      <div class="category-dialog-body">
-        <nav class="category-parent-list" id="category-parent-list" aria-label="一级分类"></nav>
-        <div class="category-children" id="category-children" role="region" aria-live="polite"></div>
-      </div>
-    </section>
-  </div>
-  <script id="timeplus-category-data" type="application/json"><?php echo $timeplusCategoryJson; ?></script>
-  <!-- Scripts -->
-  <script src="<?php $this->options->themeUrl('assets/js/jquery.min.js'); ?>"></script>
-  <script src="<?php $this->options->themeUrl('assets/js/jquery.poptrox.min.js'); ?>"></script>
-  <script src="<?php $this->options->themeUrl('assets/js/browser.min.js'); ?>"></script>
-  <script src="<?php $this->options->themeUrl('assets/js/breakpoints.min.js'); ?>"></script>
-  <script src="<?php $this->options->themeUrl('assets/js/util.js'); ?>"></script>
-  <script src="<?php $this->options->themeUrl('assets/js/main.js'); ?>"></script>
-  <script src="<?php $this->options->themeUrl('assets/js/timeplus-enhancements.js'); ?>"></script>
-</body>
-
-</html>
+    </main>
+<?php $this->need('footer.php'); ?>

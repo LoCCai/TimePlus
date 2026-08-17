@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  php:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ['8.1', '8.2', '8.3']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+      - name: Lint PHP
+        run: find . -name '*.php' -not -path './node_modules/*' -print0 | xargs -0 -n1 php -l
+      - name: Test PHP helpers
+        run: php tests/php/helpers-test.php
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run vendor:jquery
+      - run: npm run build:css
+      - name: Verify generated assets
+        run: git diff --exit-code -- assets/css assets/js/jquery.min.js
+      - run: npm test
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e

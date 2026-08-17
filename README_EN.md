@@ -10,19 +10,45 @@ The name "TimePlus" signifies the hope to extend this theme further.
 
 The theme may reflect personal design preferences based on the original Time theme. If you don't like these changes, you can try the original theme.
 
+## Requirements
+
+- Typecho 1.2.x
+- PHP 8.1 or newer
+- Chrome, Edge, Firefox, or a modern Safari release (Internet Explorer is not supported)
+
+## TimePlus 2.20
+
+- A complete article page with images, metadata, content, and comments
+- Safe multiline image fields with graceful empty-image handling
+- One gallery instance for mouse, keyboard, wheel, and touch navigation
+- Typecho-native pagination compatible with rewritten URLs and subdirectory installs
+- Local icons, jQuery 3.7.1, reproducible Sass builds, and browser smoke tests
+
+Generated CSS is committed with the theme, so regular Typecho users do not need Node.js. Theme developers can run:
+
+```bash
+npm install
+npm run vendor:jquery
+npm run build:css
+npm test
+npm run test:e2e
+```
+
+`Biglogo` (the detailed introduction) and `cnzz` (analytics code) are trusted administrator-only HTML/script settings. Do not paste untrusted code into them. Other settings are rendered as text or restricted URLs.
+
 ## Documentation
 
-Check out the [documentation](https://github.com/zhheo/TimePlus/wiki) for usage.
+Check out the [documentation](https://github.com/LoCCai/TimePlus/wiki) for usage.
 
-See installation tutorial: [Getting Started](https://github.com/zhheo/TimePlus/wiki/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8A%E6%89%8B)
+See installation tutorial: [Getting Started](https://github.com/LoCCai/TimePlus/wiki/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8A%E6%89%8B)
 
 ## Related Links
 
-Demo: [View Now](https://plog.zhheo.com/)
+Demo: [View Now](https://pblog.loccai.top/)
 
-Optimizing image usage: [Tutorial](https://github.com/zhheo/TimePlus/wiki/Time%E7%9B%B8%E5%86%8C%E5%9B%BE%E5%86%8C%E4%BC%98%E5%8C%96%E6%96%B9%E6%A1%88-%E7%BC%A9%E7%95%A5%E5%9B%BE%E5%8E%8B%E7%BC%A9%E5%92%8Cwebp%E8%87%AA%E9%80%82%E5%BA%94)
+Optimizing image usage: [Tutorial](https://github.com/LoCCai/TimePlus/wiki/Time%E7%9B%B8%E5%86%8C%E5%9B%BE%E5%86%8C%E4%BC%98%E5%8C%96%E6%96%B9%E6%A1%88-%E7%BC%A9%E7%95%A5%E5%9B%BE%E5%8E%8B%E7%BC%A9%E5%92%8Cwebp%E8%87%AA%E9%80%82%E5%BA%94)
 
-Cooperating with image processing: [Tutorial](https://github.com/zhheo/TimePlus/wiki/%E9%98%BF%E9%87%8C%E4%BA%91oss%E3%80%81%E5%8F%88%E6%8B%8D%E4%BA%91%E5%82%A8%E5%AD%98%E7%AD%89%E5%82%A8%E5%AD%98%E6%A1%B6%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E4%BB%8B%E7%BB%8D-%E2%80%93%E9%85%8D%E5%90%88-Time%E6%97%B6%E5%85%89%E7%9B%B8%E5%86%8C%E4%BD%BF%E7%94%A8)
+Cooperating with image processing: [Tutorial](https://github.com/LoCCai/TimePlus/wiki/%E9%98%BF%E9%87%8C%E4%BA%91oss%E3%80%81%E5%8F%88%E6%8B%8D%E4%BA%91%E5%82%A8%E5%AD%98%E7%AD%89%E5%82%A8%E5%AD%98%E6%A1%B6%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E4%BB%8B%E7%BB%8D-%E2%80%93%E9%85%8D%E5%90%88-Time%E6%97%B6%E5%85%89%E7%9B%B8%E5%86%8C%E4%BD%BF%E7%94%A8)
 
 ## Acknowledgments:
 

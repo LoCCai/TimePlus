@@ -17,7 +17,7 @@
 
 .category-panel-trigger:hover,
 .category-panel-trigger:focus-visible,
-.category-panel-trigger[aria-expanded=true] {
+.category-panel-trigger[aria-expanded="true"] {
   background: #242629;
   color: #ffffff;
 }
@@ -40,12 +40,13 @@
   z-index: 30000;
 }
 
-@supports (-webkit-backdrop-filter: blur(12px)) or (backdrop-filter: blur(12px)) {
+@supports ((-webkit-backdrop-filter: blur(12px)) or (backdrop-filter: blur(12px))) {
   .category-overlay {
     -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
   }
 }
+
 html.timeplus-category-open,
 body.timeplus-category-open {
   overflow: hidden !important;
@@ -212,7 +213,7 @@ body.timeplus-category-open {
 
 .category-child-list .category-child-list {
   display: block;
-  grid-column: 1/-1;
+  grid-column: 1 / -1;
   margin: 0.45rem 0 0 0.75rem;
 }
 
@@ -289,18 +290,22 @@ body.timeplus-category-open {
     line-height: 3.75em;
     padding: 0 1.15em;
   }
+
   .category-overlay {
     align-items: flex-start;
     padding: 4.75rem 0.75rem 0.75rem;
   }
+
   .category-dialog {
     max-height: calc(100vh - 5.5rem);
     width: 100%;
   }
+
   .category-dialog-body {
     display: flex;
     flex-direction: column;
   }
+
   .category-parent-list {
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     border-right: 0;
@@ -311,22 +316,27 @@ body.timeplus-category-open {
     overflow-y: hidden;
     scrollbar-width: none;
   }
+
   .category-parent-list::-webkit-scrollbar {
     display: none;
   }
+
   .category-parent-row {
     flex: 0 0 auto;
     margin: 0 0.35rem 0 0;
     max-width: 15rem;
   }
+
   .category-children {
     flex: 1 1 auto;
     min-height: 12rem;
   }
+
   .category-child-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
 @media (prefers-reduced-motion: reduce) {
   .category-overlay *,
   .category-overlay *::before,
@@ -335,6 +345,7 @@ body.timeplus-category-open {
     transition-duration: 0.01ms !important;
   }
 }
+
 /* Shared header and local icons. */
 .site-brand {
   align-items: center;
@@ -384,7 +395,7 @@ body.timeplus-category-open {
 .header-action-button:hover,
 .header-action-button:focus-visible,
 .header-action-button.active,
-.header-action-button[aria-pressed=true] {
+.header-action-button[aria-pressed="true"] {
   background: rgba(255, 255, 255, 0.12);
   color: #ffffff;
 }
@@ -696,16 +707,20 @@ ul.icons .timeplus-icon {
   #fullscreen [data-fullscreen-label] {
     display: none;
   }
+
   .header-action-button {
     font-size: 0.85em;
     padding: 8px 10px;
   }
+
   .timeplus-post-main {
     padding: 1rem 0.75rem 5.5rem;
   }
+
   .timeplus-post-gallery {
     grid-template-columns: 1fr;
   }
+
   .poptrox-popup .closer,
   .poptrox-popup .nav-previous,
   .poptrox-popup .nav-next {

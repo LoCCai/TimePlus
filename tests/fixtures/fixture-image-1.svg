@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">蓝色山景测试图片</title>
+  <desc id="desc">用于 TimePlus 浏览器测试的稳定矢量图片。</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#172a46"/>
+      <stop offset="1" stop-color="#4c87a6"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#sky)"/>
+  <circle cx="930" cy="180" r="88" fill="#f4d58d" opacity=".92"/>
+  <path d="M0 670 280 330 520 610 720 390 1200 720v80H0z" fill="#193f4c"/>
+  <path d="m280 330 72 88-55-20-51 28zM720 390l105 74-80-20-64 30z" fill="#e7eef2" opacity=".9"/>
+  <path d="M0 700c190-80 365-48 535 10s410 43 665-54v144H0z" fill="#102c32"/>
+</svg>

@@ -1,0 +1,18 @@
+{
+  "name": "timeplus-theme",
+  "version": "2.20.0",
+  "private": true,
+  "description": "Build and test tooling for the TimePlus Typecho theme",
+  "scripts": {
+    "build:css": "sass --no-source-map --style=expanded assets/sass/main.scss assets/css/main.css && sass --no-source-map --style=expanded assets/sass/noscript.scss assets/css/noscript.css && sass --no-source-map --style=expanded assets/sass/timeplus-enhancements.scss assets/css/timeplus-enhancements.css",
+    "vendor:jquery": "node scripts/vendor-jquery.mjs",
+    "check:js": "node --check assets/js/main.js && node --check assets/js/timeplus-gallery.js && node --check assets/js/timeplus-enhancements.js && node --check assets/js/util.js",
+    "test:e2e": "playwright test",
+    "test": "npm run check:js"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1",
+    "jquery": "3.7.1",
+    "sass": "1.90.0"
+  }
+}
