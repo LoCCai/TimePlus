@@ -1,0 +1,44 @@
+# PhotoWall 光影墙 简体中文语言包（预留）
+# Copyright (C) 2026 LoCCai
+# 此文件为语言包占位：主题当前直接输出中文文案，
+# 后续如需多语言，将模板中的文案替换为 _t('...') 后在此补全翻译。
+msgid ""
+msgstr ""
+"Project-Id-Version: PhotoWall 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/LoCCai/TimePlus/issues\n"
+"POT-Creation-Date: 2026-09-14 12:00+0800\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+# 以下为 Typecho 内置文案（由 Typecho 核心翻译），供参考。
+msgid "暂无评论"
+msgstr "暂无评论"
+
+msgid "1 条评论"
+msgstr "1 条评论"
+
+msgid "%d 条评论"
+msgstr "%d 条评论"
+
+msgid "添加新评论"
+msgstr "添加新评论"
+
+msgid "称呼"
+msgstr "称呼"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "网站"
+msgstr "网站"
+
+msgid "内容"
+msgstr "内容"
+
+msgid "提交评论"
+msgstr "提交评论"
+
+msgid "评论已关闭"
+msgstr "评论已关闭"

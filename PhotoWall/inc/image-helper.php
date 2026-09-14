@@ -246,8 +246,15 @@ function pw_excerpt($html, $length = 120)
     return '';
   }
   $text = strip_tags($text);
-  $text = preg_replace('/\s+/u', ' ', $text);
-  $text = trim($text);
+  $collapsed = preg_replace('/\s+/u', ' ', $text);
+  if ($collapsed === null) {
+    // Invalid UTF-8 fallback: same as above but without the u modifier
+    $collapsed = preg_replace('/\s+/', ' ', $text);
+  }
+  if ($collapsed === null) {
+    return '';
+  }
+  $text = trim($collapsed);
   if ($text === '') {
     return '';
   }
