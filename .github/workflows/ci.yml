@@ -19,6 +19,8 @@ jobs:
         run: find . -name '*.php' -not -path './node_modules/*' -print0 | xargs -0 -n1 php -l
       - name: Test PHP helpers
         run: php tests/php/helpers-test.php
+      - name: Test PhotoWall data layer
+        run: php tests/php/photowall-test.php
 
   frontend:
     runs-on: ubuntu-latest
