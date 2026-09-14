@@ -12,6 +12,14 @@ $pwOpts = pw_theme_opts();
 $pwUseWall = $this->is('category') || $this->is('tag');
 ?>
 <main id="pw-main" class="pw-main<?php echo $pwUseWall ? '' : ' pw-main-inner'; ?>">
+<?php
+$pwArchiveDesc = '';
+try {
+  $pwArchiveDesc = trim((string) $this->description);
+} catch (Exception $pwDescException) {
+  $pwArchiveDesc = '';
+}
+?>
   <header class="pw-archive-head">
     <h1 class="pw-archive-title"><?php $this->archiveTitle(array(
       'category' => '分类：%s',
@@ -20,8 +28,8 @@ $pwUseWall = $this->is('category') || $this->is('tag');
       'date' => '日期：%s',
       'search' => '搜索：%s',
     ), '', ''); ?></h1>
-    <?php if (trim((string) $this->getDescription()) !== ''): ?>
-    <p class="pw-archive-desc"><?php echo pw_e(trim((string) $this->getDescription())); ?></p>
+    <?php if ($pwArchiveDesc !== ''): ?>
+    <p class="pw-archive-desc"><?php echo pw_e($pwArchiveDesc); ?></p>
     <?php endif; ?>
   </header>
 

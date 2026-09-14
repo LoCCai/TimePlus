@@ -280,10 +280,16 @@ function pw_attachment_urls($cid, $limit = 3)
   }
 
   try {
+    $sortDesc = 'DESC';
+    if (defined('Typecho_Db::SORT_DESC')) {
+      $sortDesc = Typecho_Db::SORT_DESC;
+    } elseif (defined('Typecho\\Db::SORT_DESC')) {
+      $sortDesc = Typecho\Db::SORT_DESC;
+    }
     $rows = $db->fetchAll($db->select('text')
       ->from('table.contents')
       ->where('type = ? AND parent = ?', 'attachment', (int) $cid)
-      ->order('created', Typecho_Db::SORT_DESC)
+      ->order('created', $sortDesc)
       ->limit((int) $limit));
   } catch (Exception $e) {
     return $urls;

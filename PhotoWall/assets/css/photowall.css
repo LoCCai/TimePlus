@@ -1,0 +1,348 @@
+/* ============================================================
+   PhotoWall 光影墙 — 照片墙 / 筛选栏 / 过渡动效
+   依赖 main.css 中的 CSS 变量
+   ============================================================ */
+
+/* ---------- 首页大标题 ---------- */
+
+.pw-hero-head {
+  padding: 18px 0 4px;
+  text-align: center;
+}
+
+.pw-hero-title {
+  font-size: clamp(26px, 5vw, 40px);
+  margin: 0 0 6px;
+  letter-spacing: 0.02em;
+}
+
+.pw-hero-subtitle {
+  margin: 0;
+  color: var(--pw-fg-muted);
+  font-size: 15px;
+}
+
+/* ---------- 筛选栏 ---------- */
+
+.pw-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  align-items: center;
+  padding: 14px 0 6px;
+}
+
+.pw-filters-empty {
+  display: none;
+}
+
+.pw-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.pw-filter-label {
+  color: var(--pw-fg-muted);
+  font-size: 13px;
+  margin-right: 2px;
+}
+
+.pw-filter-btn {
+  appearance: none;
+  border: 1px solid var(--pw-border);
+  background: var(--pw-card);
+  color: var(--pw-fg-muted);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 13px;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.pw-filter-btn:hover {
+  color: var(--pw-fg);
+  border-color: var(--pw-accent);
+}
+
+.pw-filter-btn[aria-pressed='true'] {
+  background: var(--pw-accent);
+  border-color: var(--pw-accent);
+  color: #fff;
+}
+
+.pw-filter-count {
+  font-style: normal;
+  font-size: 11px;
+  opacity: 0.72;
+  margin-left: 4px;
+}
+
+/* ---------- 单图舞台 ---------- */
+
+.pw-wall {
+  margin-top: 10px;
+}
+
+.pw-stage {
+  position: relative;
+  width: 100%;
+  height: min(76vh, 720px);
+  border-radius: var(--pw-card-radius, 12px);
+  overflow: hidden;
+  background: var(--pw-card);
+  box-shadow: var(--pw-shadow);
+  cursor: zoom-in;
+}
+
+.pw-mode-mixed .pw-stage {
+  height: min(54vh, 520px);
+  margin-bottom: var(--pw-gap, 12px);
+}
+
+.pw-layer {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  transform: none;
+  transition: opacity var(--pw-duration, 800ms) var(--pw-easing, ease),
+    transform var(--pw-duration, 800ms) var(--pw-easing, ease);
+  will-change: opacity, transform;
+}
+
+.pw-layer.is-active {
+  opacity: 1;
+}
+
+.pw-layer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* 渐入渐出（默认）：仅 opacity 参与过渡 */
+
+/* 缩放渐入 */
+.pw-fx-zoom .pw-layer {
+  transform: scale(1.08);
+}
+
+.pw-fx-zoom .pw-layer.is-active {
+  transform: scale(1);
+}
+
+/* 滑动切换 */
+.pw-fx-slide .pw-layer {
+  transform: translateX(6%);
+}
+
+.pw-fx-slide .pw-layer.is-active {
+  transform: translateX(0);
+}
+
+/* 随机淡入：带轻微位移的淡入 */
+.pw-fx-randomfade .pw-layer {
+  transform: translateY(3%) scale(1.03);
+}
+
+.pw-fx-randomfade .pw-layer.is-active {
+  transform: none;
+}
+
+/* Ken Burns：淡入 + 缓慢推近 */
+.pw-fx-kenburns .pw-layer.is-active img {
+  animation: pw-kenburns var(--pw-interval, 5000ms) linear both;
+}
+
+@keyframes pw-kenburns {
+  from {
+    transform: scale(1) translate(0, 0);
+  }
+  to {
+    transform: scale(1.14) translate(-1.6%, -1.1%);
+  }
+}
+
+.pw-stage-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 46px 22px 18px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.66), transparent);
+  color: #fff;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+
+.pw-stage-caption-title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
+}
+
+.pw-stage-caption-meta {
+  margin: 4px 0 0;
+  font-size: 13px;
+  opacity: 0.82;
+}
+
+/* ---------- 多图网格 ---------- */
+
+.pw-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--pw-cols, 3), 1fr);
+  gap: var(--pw-gap, 12px);
+}
+
+.pw-cell {
+  position: relative;
+  border-radius: var(--pw-card-radius, 12px);
+  overflow: hidden;
+  background: var(--pw-card);
+  cursor: zoom-in;
+  border: 0;
+  padding: 0;
+  aspect-ratio: var(--pw-ratio, 4 / 3);
+  display: block;
+}
+
+.pw-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: opacity var(--pw-duration, 800ms) var(--pw-easing, ease),
+    transform var(--pw-duration, 800ms) var(--pw-easing, ease);
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.pw-cell:hover img {
+  transform: scale(1.05);
+}
+
+.pw-cell.is-leaving img {
+  opacity: 0;
+  transform: scale(1.04);
+}
+
+.pw-cell.is-entering img {
+  opacity: 0;
+  transform: scale(1.02);
+  transition: none;
+}
+
+.pw-cell-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 30px 14px 12px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+  color: #fff;
+  font-size: 13px;
+  text-align: left;
+  opacity: 0;
+  transition: opacity 0.25s;
+  pointer-events: none;
+}
+
+.pw-cell:hover .pw-cell-caption,
+.pw-cell:focus-visible .pw-cell-caption {
+  opacity: 1;
+}
+
+/* ---------- 空状态 ---------- */
+
+.pw-empty {
+  text-align: center;
+  padding: 70px 20px;
+  color: var(--pw-fg-muted);
+  border: 1px dashed var(--pw-border);
+  border-radius: 14px;
+  margin-top: 12px;
+}
+
+.pw-empty-loading {
+  border: 0;
+  padding: 40px 20px;
+}
+
+/* ---------- 无脚本回退 ---------- */
+
+.pw-noscript {
+  display: grid;
+  grid-template-columns: repeat(var(--pw-cols, 3), 1fr);
+  gap: var(--pw-gap, 12px);
+  margin-top: 14px;
+}
+
+.pw-noscript-item {
+  position: relative;
+  border-radius: var(--pw-card-radius, 12px);
+  overflow: hidden;
+  display: block;
+  background: var(--pw-card);
+}
+
+.pw-noscript-item img {
+  width: 100%;
+  aspect-ratio: var(--pw-ratio, 4 / 3);
+  object-fit: cover;
+  display: block;
+}
+
+.pw-noscript-title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 26px 12px 10px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.62), transparent);
+  color: #fff;
+  font-size: 13px;
+}
+
+/* ---------- 响应式 ---------- */
+
+@media (max-width: 900px) {
+  .pw-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pw-noscript {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pw-stage {
+    height: 64vh;
+  }
+}
+
+@media (max-width: 560px) {
+  .pw-main {
+    padding: 12px 12px 32px;
+  }
+
+  .pw-stage {
+    height: 58vh;
+    border-radius: calc(var(--pw-card-radius, 12px) * 0.7);
+  }
+
+  .pw-filters {
+    gap: 6px 10px;
+  }
+
+  .pw-filter-btn {
+    padding: 5px 11px;
+    font-size: 12px;
+  }
+}
